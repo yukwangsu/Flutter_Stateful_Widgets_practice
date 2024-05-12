@@ -12,44 +12,49 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int counter = 0;
-
-  void onClicked() {
-    //setState: State클래스에게 데이터가 변경되었다고 알리는 함수
-    //Dart가 build를 다시 한번 더 실행하고 렌더링한다.
-    setState(() {
-      counter = counter + 1;
-    });
-  }
+  List<int> numbers = [];
 
   @override
+  //context에는 위젯 트리에 대한 정보가 담겨있다.
+  //context는 부모 요소에 접근할 수 있게 해준다.
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color(0xFFF4EDDB),
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+      ),
+      home: const Scaffold(
+        backgroundColor: Color(0xFFF4EDDB),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Click Count',
-                style: TextStyle(fontSize: 30),
-              ),
-              Text(
-                //counter 변수의 값을 text로 표시
-                '$counter',
-                style: const TextStyle(fontSize: 30),
-              ),
-              IconButton(
-                iconSize: 40,
-                onPressed: onClicked,
-                icon: const Icon(
-                  Icons.add_box_rounded,
-                ),
-              ),
+              MyLargeTitle(),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyLargeTitle extends StatelessWidget {
+  const MyLargeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'My Large Title',
+      style: TextStyle(
+        fontSize: 30,
+        //context를 사용해서 Theme에 접근한다.
+        //'titleLarge, color가 존재한다면' 이라는 가정을 하기 위해 ?를 사용한다.
+        color: Theme.of(context).textTheme.titleLarge?.color,
       ),
     );
   }
